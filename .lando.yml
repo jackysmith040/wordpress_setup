@@ -1,4 +1,4 @@
-name: mycleanspace
+name: my-wp-starter
 recipe: wordpress
 config:
   php: 8.2
@@ -15,3 +15,16 @@ services:
       - cp wp-config-local.php wp-config.php
     run:
       - .lando/run.sh
+  mailhog:
+    type: mailhog
+    portforward: true
+    hogfrom:
+      - appserver
+proxy:
+  appserver_nginx:
+    - wp-starter.local
+events:
+  pre-start:
+    - appserver: .lando/pre-start.sh
+  post-start:
+    - appserver: .lando/post-start.sh
